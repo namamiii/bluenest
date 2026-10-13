@@ -1,0 +1,115 @@
+.login-page {
+  display: flex;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  background-color: rgb(248, 250, 253);
+}
+.login-left {
+  width: 43%;
+  background-color: rgb(22, 38, 70);
+  background-image:
+    linear-gradient(
+      rgba(22, 38, 70, 0.65),
+      rgba(22, 38, 70, 0.65)
+    ), url("/images/img.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
+}
+.login-left h2 {
+  font-size: 30px;
+  margin-bottom: 5px;
+}
+.login-left p {
+  font-size: 16px;
+  line-height: 1.6;
+}
+.login-left h1 {
+  font-size: 34px;
+  line-height: 1.4;
+  max-width: 400px;
+  margin: 0 auto 12px;
+}
+.login-right {
+  width: 57%;
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
+}
+.login-right h1 {
+  color: rgb(30, 41, 59);
+  font-size: 30px;
+  text-align: center;
+  margin-bottom: 5px;
+}
+.login-right > p {
+  color: rgb(105, 118, 140);
+  text-align: center;
+  margin-top: 5px;
+}
+.login-right form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+.login-right label {
+  color: rgb(30, 41, 59);
+  font-size: 15px;
+  text-align: left;
+}
+.login-right input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 13px;
+  background-color: white;
+  color: rgb(30, 41, 59);
+  border: 1px solid rgb(200, 210, 225);
+  border-radius: 6px;
+  font-size: 14px;
+}
+.login-right input::placeholder {
+  color: rgb(130, 140, 155);
+}
+.login-right button {
+  padding: 13px;
+  background-color: rgb(32, 56, 100);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.login-right .signup {
+  color: rgb(105, 118, 140);
+  text-align: center;
+  margin-top: 25px;
+  font-size: 15px;
+}
+.login-right .signup a {
+  color: rgb(32, 56, 100);
+  font-weight: bold;
+  text-decoration: none;
+}
+@media (max-width: 700px) {
+  .login-page {
+    flex-direction: column;
+  }
+  .login-left,
+  .login-right {
+    width: 100%;
+    padding: 30px;
+  }
+  .login-left h1 {
+    font-size: 28px;
+    margin-top: 20px;
+  }
+}

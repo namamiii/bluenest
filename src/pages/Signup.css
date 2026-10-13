@@ -1,0 +1,65 @@
+* {
+  box-sizing: border-box;
+}
+.signup-page {
+  min-height: 100vh;
+  width: 100%;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(248, 250, 253);
+  font-family: Arial, sans-serif;
+  color: rgb(30, 41, 59);
+}
+.signup-page h1 {
+  color: rgb(22, 38, 70);
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+.signup-page h2 {
+  font-size: 26px;
+  margin-bottom: 5px;
+   color: rgb(30, 41, 59);
+}
+.signup-page p {
+  color: rgb(105, 118, 140);
+  margin-bottom: 20px;
+}
+.signup-page form {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.signup-page label {
+  font-size: 15px;
+  text-align: left;
+}
+.signup-page input {
+  width: 100%;
+  padding: 12px;
+  background-color: white;
+  color: rgb(30, 41, 59);
+  border: 1px solid rgb(200, 210, 225);
+  border-radius: 6px;
+  font-size: 14px;
+}
+.signup-page button {
+  width: 100%;
+  padding: 13px;
+  margin-top: 10px;
+  background-color: rgb(32, 56, 100);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+}
+.signup-page a {
+  color: rgb(32, 56, 100);
+  font-weight: bold;
+  text-decoration: none;
+}
