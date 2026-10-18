@@ -1,18 +1,67 @@
+import { useEffect, useState } from "react";
 import "./Dashboard.css";
 import MyProperties from "./Myproperties";
+import AddProperty from "./Addproperty";
+import { getProperties } from "../components/api.js";
 function Dashboard({ activePage, onNavigate }) {
+  const [properties, setProperties] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const menuItems = [
     "Dashboard",
     "My Properties",
     "Add Property",
-    "Tenants & Leases",
-    "Payments",
     "Market Insights",
   ];
+  const propertyImages = [
+    "/images/property1.jpg",
+    "/images/property2.jpg",
+    "/images/property3.jpg",
+  ];
+  useEffect(() => {
+    async function loadDashboardData() {
+      const token = localStorage.getItem("access");
+      if (!token) {
+        setError("Please log in again to load dashboard data.");
+        setLoading(false);
+        return;
+      }
+      setLoading(true);
+      try {
+        const data = await getProperties(token);
+
+        const propertyList = Array.isArray(data)
+          ? data
+          : data.results || data.properties || [];
+        setProperties(propertyList);
+        setError("");
+      } catch (err) {
+        console.error("Dashboard properties error:", err);
+        setError(err.message || "Unable to load dashboard data.");
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadDashboardData();
+  }, [activePage]);
+  const totalProperties = properties.length;
+  const monthlyIncome = properties.reduce((total, property) => {
+    return total + Number(property.asking_rent ?? property.rent ?? 0);
+  }, 0);
+  function formatRent(amount) {
+    return `₹${amount.toLocaleString("en-IN")}`;
+  }
   return (
     <div className="dashboard">
       <aside className="sidebar">
-        <h2 className="logo"> BlueNest</h2>
+        <div className="logo">
+          <img
+            src="/images/logo.jpeg"
+            alt="BlueNest logo"
+            className="sidebar-logo"
+          />
+          <span>BlueNest</span>
+        </div>
         <nav className="sidebar-menu">
           {menuItems.map((item) => (
             <a
@@ -51,87 +100,118 @@ function Dashboard({ activePage, onNavigate }) {
                   Here's what's happening with your properties today.
                 </p>
               </div>
+              {error && <p className="dashboard-error">{error}</p>}
               <div className="stats-grid">
                 <div className="stat-card">
                   <div className="stat-card-top">
                     <p>Total Properties</p>
                     <span className="stat-icon properties-icon">⌂</span>
                   </div>
-                  <h2>--</h2>
-                  <span className="stat-note">
-                    Properties you manage
-                  </span>
+                  <h2>{loading ? "..." : totalProperties}</h2>
                 </div>
                 <div className="stat-card">
                   <div className="stat-card-top">
-                    <p>Monthly Income</p>
+                    <p>Monthly Listed Rent</p>
                     <span className="stat-icon income-icon">₹</span>
                   </div>
-                  <h2>--</h2>
-                  <span className="stat-note">
-                    Monthly rental income
-                  </span>
-                </div>
-                <div className="stat-card">
-                  <div className="stat-card-top">
-                    <p>Pending Dues</p>
-                    <span className="stat-icon dues-icon">!</span>
-                  </div>
-                  <h2>--</h2>
-                  <span className="stat-note">
-                    Payments awaiting collection
-                  </span>
+                  <h2>{loading ? "..." : formatRent(monthlyIncome)}</h2>
                 </div>
               </div>
               <section className="properties-section">
                 <div className="section-heading">
                   <div>
                     <h2>Recent Properties</h2>
-                    <p>
-                      Keep track of the properties you manage.
-                    </p>
+                    <p>Keep track of the properties you manage.</p>
                   </div>
                   <button
                     className="view-all-btn"
-                    onClick={() => onNavigate("My Properties")} >
+                    onClick={() => onNavigate("My Properties")}
+                  >
                     View all →
                   </button>
                 </div>
-                <div className="empty-state">
-                  <div className="empty-icon"></div>
-                  <h3>No properties to show yet</h3>
-                  <p>
-                    Your properties will appear here once
-                    property details are available.
-                  </p>
-                  <button
-                    className="empty-action-btn"
-                    onClick={() => onNavigate("Add Property")}
-                  >
-                    + Add your first property
-                  </button>
-                </div>
+                {loading ? (
+                  <p>Loading properties...</p>
+                ) : error ? (
+                  <p>Properties could not be loaded.</p>
+                ) : properties.length === 0 ? (
+                  <div className="empty-state">
+                    <div className="empty-icon">⌂</div>
+                    <h3>No properties to show yet</h3>
+                    <p>
+                      Your properties will appear here once property
+                      details are available.
+                    </p>
+                    <button
+                      className="empty-action-btn"
+                      onClick={() => onNavigate("Add Property")}
+                    >
+                      + Add your first property
+                    </button>
+                  </div>
+                ) : (
+                  <div className="recent-properties-grid">
+                    {properties.slice(0, 3).map((property, index) => (
+                      <div
+                        className="recent-property-card"
+                        key={property.id ?? index}
+                      >
+                        <img
+                          src={
+                            property.image ||
+                            propertyImages[index % propertyImages.length]
+                          }
+                          alt={property.title || "Property"}
+                          className="recent-property-image"
+                        />
+                        <div className="recent-property-details">
+                          <h3>{property.title || "Untitled Property"}</h3>
+                          <p className="property-location">
+                            {property.locality ||
+                              property.city ||
+                              "Location unavailable"}
+                          </p>
+                          <p className="property-rent">
+                            {formatRent(
+                              Number(
+                                property.asking_rent ?? property.rent ?? 0
+                              )
+                            )}
+                            <span> / month</span>
+                          </p>
+                          <div className="property-card-bottom">
+                            <span>
+                              {property.bhk
+                                ? `${property.bhk} BHK`
+                                : "Residential"}
+                            </span>
+                            <span className="property-status">
+                              {property.is_active ? "Active" : "Inactive"}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </section>
             </>
           )}
-
           {activePage === "My Properties" && (
-             <MyProperties
-             onAddProperty={() => onNavigate("Add Property")}
-             />
-         )}
-
-          {activePage !== "Dashboard" &&
-            activePage !== "My Properties" && (
-              <div className="welcome-section">
-                <h1>{activePage}</h1>
-                <p>This section is under development.</p>
-              </div>
-            )}
+            <MyProperties
+              onAddProperty={() => onNavigate("Add Property")}
+            />
+          )}
+          {activePage === "Add Property" && <AddProperty />}
+          {activePage === "Market Insights" && (
+            <div className="welcome-section">
+              <h1>Market Insights</h1>
+              <p>This section is under development.</p>
+            </div>
+          )}
         </section>
       </main>
     </div>
   );
 }
-
 export default Dashboard;

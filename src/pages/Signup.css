@@ -1,65 +1,173 @@
-* {
-  box-sizing: border-box;
-}
-.signup-page {
+.login-page:has(.login-right select) {
+  display: flex;
   min-height: 100vh;
   width: 100%;
-  padding: 40px;
+  font-family: Arial, sans-serif;
+  background-color: rgb(248, 250, 253);
+}
+.login-page:has(.login-right select) .login-left {
+  width: 43%;
+  min-height: 100vh;
+  padding: 50px 55px;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  background-color: rgb(248, 250, 253);
-  font-family: Arial, sans-serif;
-  color: rgb(30, 41, 59);
+  align-items: flex-start;
+  background-color: rgb(22, 38, 70);
+  background-image:
+    linear-gradient(
+      rgba(22, 38, 70, 0.65),
+      rgba(22, 38, 70, 0.65)
+    ),
+    url("/images/img.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
 }
-.signup-page h1 {
-  color: rgb(22, 38, 70);
-  font-size: 30px;
-  margin-bottom: 10px;
-}
-.signup-page h2 {
-  font-size: 26px;
-  margin-bottom: 5px;
-   color: rgb(30, 41, 59);
-}
-.signup-page p {
-  color: rgb(105, 118, 140);
-  margin-bottom: 20px;
-}
-.signup-page form {
-  width: 100%;
-  max-width: 400px;
+.login-page:has(.login-right select) .login-left h2 {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  align-items: center;
+  gap: 12px;
+  font-size: 30px;
+  margin: 0 0 12px;
+  color: white;
 }
-.signup-page label {
+.login-page:has(.login-right select) .login-left h2::before {
+  content: "";
+  display: inline-block;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  background-image: url("/images/logo.jpeg");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: rgb(255, 255, 255);
+  border: 3px solid rgb(255, 255, 255);
+  border-radius: 12px;
+  box-sizing: border-box;
+}
+.login-page:has(.login-right select) .login-left p:first-of-type {
   font-size: 15px;
+  line-height: 1.6;
+  margin: 0 0 30px;
+  color: rgb(235, 239, 247);
+}
+.login-page:has(.login-right select) .login-left h1 {
+  font-size: 40px;
+  line-height: 1.2;
+  max-width: 330px;
+  margin: 0 0 15px;
+  color: white;
   text-align: left;
 }
-.signup-page input {
+.login-page:has(.login-right select) .login-left p:last-of-type {
+  font-size: 16px;
+  line-height: 1.7;
+  max-width: 310px;
+  margin: 0;
+  color: rgb(235, 239, 247);
+}
+.login-page:has(.login-right select) .login-right {
+  width: 57%;
+  min-height: 100vh;
+  padding: 45px 75px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  background-color: rgb(248, 250, 253);
+}
+.login-page:has(.login-right select) .login-right h1 {
+  font-size: 30px;
+  color: rgb(22, 38, 70);
+  text-align: left;
+  margin: 0 0 5px;
+}
+.login-page:has(.login-right select) .login-right > p {
+  color: rgb(105, 118, 140);
+  text-align: left;
+  margin: 0 0 18px;
+}
+.login-page:has(.login-right select) .login-right form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+.login-page:has(.login-right select) .login-right label {
+  font-size: 14px;
+  color: rgb(30, 41, 59);
+  text-align: left;
+  margin-top: 5px;
+}
+.login-page:has(.login-right select) .login-right input,
+.login-page:has(.login-right select) .login-right select {
   width: 100%;
   padding: 12px;
+  box-sizing: border-box;
   background-color: white;
   color: rgb(30, 41, 59);
   border: 1px solid rgb(200, 210, 225);
-  border-radius: 6px;
+  border-radius: 7px;
   font-size: 14px;
 }
-.signup-page button {
+.login-page:has(.login-right select) .login-right input::placeholder {
+  color: rgb(130, 140, 155);
+}
+.login-page:has(.login-right select) .login-right button {
   width: 100%;
   padding: 13px;
-  margin-top: 10px;
+  margin-top: 12px;
   background-color: rgb(32, 56, 100);
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 7px;
   font-size: 15px;
   cursor: pointer;
 }
-.signup-page a {
+.login-page:has(.login-right select) .login-right form p {
+  font-size: 14px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.login-page:has(.login-right select) .login-right .signup {
+  text-align: center;
+  margin-top: 18px;
+  font-size: 14px;
+  color: rgb(105, 118, 140);
+}
+.login-page:has(.login-right select) .login-right .signup a {
   color: rgb(32, 56, 100);
   font-weight: bold;
   text-decoration: none;
+}
+@media (max-width: 900px) {
+  .login-page:has(.login-right select) {
+    flex-direction: column;
+  }
+  .login-page:has(.login-right select) .login-left,
+  .login-page:has(.login-right select) .login-right {
+    width: 100%;
+    min-height: auto;
+    padding: 35px;
+  }
+  .login-page:has(.login-right select) .login-left h1 {
+    font-size: 32px;
+  }
+}
+@media (max-width: 500px) {
+  .login-page:has(.login-right select) .login-left,
+  .login-page:has(.login-right select) .login-right {
+    padding: 25px;
+  }
+  .login-page:has(.login-right select) .login-left h1 {
+    font-size: 28px;
+  }
+  .login-page:has(.login-right select) .login-right h1 {
+    font-size: 26px;
+  }
 }

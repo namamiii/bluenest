@@ -1,0 +1,305 @@
+
+.add-property-page {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  color: rgb(28, 32, 53);
+}
+.add-property-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+.add-property-heading .eyebrow {
+  margin: 0 0 10px;
+  color: rgb(75, 73, 190);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+.add-property-heading h1 {
+  margin: 0 0 9px;
+  color: rgb(25, 29, 52);
+  font-size: 29px;
+  letter-spacing: -0.7px;
+}
+.add-property-subtitle {
+  margin: 0;
+  color: rgb(112, 120, 140);
+  font-size: 14px;
+  line-height: 1.7;
+}
+.add-property-heading-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  border-radius: 16px;
+  background: rgb(237, 235, 255);
+  color: rgb(53, 37, 174);
+  font-size: 32px;
+}
+.property-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.form-section {
+  padding: 26px;
+  background: rgb(255, 255, 255);
+  border: 1px solid rgb(231, 232, 241);
+  border-radius: 15px;
+  box-shadow: 0 4px 16px rgba(29, 30, 75, 0.035);
+}
+.form-section-heading {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding-bottom: 20px;
+  margin-bottom: 23px;
+  border-bottom: 1px solid rgb(239, 239, 246);
+}
+.form-section-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  background: rgb(239, 237, 255);
+  color: rgb(53, 37, 174);
+  font-size: 13px;
+  font-weight: 800;
+}
+.form-section-heading h2 {
+  margin: 0 0 5px;
+  color: rgb(29, 32, 54);
+  font-size: 17px;
+  font-weight: 700;
+}
+.form-section-heading p {
+  margin: 0;
+  color: rgb(117, 124, 143);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px 20px;
+}
+.form-field {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 9px;
+}
+.form-field.full-width {
+  grid-column: 1 / -1;
+}
+.form-field label {
+  color: rgb(47, 51, 73);
+  font-size: 13px;
+  font-weight: 650;
+}
+.form-field input,
+.form-field select,
+.form-field textarea {
+  width: 100%;
+  min-width: 0;
+  padding: 13px 14px;
+  border: 1px solid rgb(222, 225, 237);
+  border-radius: 9px;
+  outline: none;
+  background: rgb(251, 251, 254);
+  color: rgb(35, 39, 61);
+  font-family: inherit;
+  font-size: 13px;
+  transition: border-color 0.2s, box-shadow 0.2s,
+}
+
+.form-field input,
+.form-field select {
+  min-height: 46px;
+}
+.form-field input::placeholder,
+.form-field textarea::placeholder {
+  color: rgb(157, 163, 179);
+}
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+  border-color: rgb(91, 79, 205);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(91, 79, 205, 0.10);
+}
+.form-field textarea {
+  resize: vertical;
+  min-height: 125px;
+  line-height: 1.7;
+}
+.field-hint {
+  color: rgb(130, 136, 153);
+  font-size: 11px;
+  line-height: 1.6;
+}
+.rent-input-wrap {
+  display: flex;
+  align-items: center;
+  min-height: 46px;
+  overflow: hidden;
+  border: 1px solid rgb(222, 225, 237);
+  border-radius: 9px;
+  background: rgb(251, 251, 254);
+}
+.rent-input-wrap:focus-within {
+  border-color: rgb(91, 79, 205);
+  box-shadow: 0 0 0 3px rgba(91, 79, 205, 0.10);
+  background: white;
+}
+.rent-input-wrap > span {
+  padding-left: 14px;
+  color: rgb(67, 53, 178);
+  font-size: 15px;
+  font-weight: 700;
+}
+.rent-input-wrap input {
+  border: none;
+  box-shadow: none;
+  background: transparent;
+}
+.rent-input-wrap input:focus {
+  box-shadow: none;
+}
+.image-upload-area {
+  min-height: 190px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 1.5px dashed rgb(177, 174, 225);
+  border-radius: 12px;
+  background: rgb(250, 249, 255);
+  text-align: center;
+  cursor: pointer;
+}
+.image-upload-area:hover {
+  background: rgb(243, 241, 255);
+  border-color: rgb(91, 79, 205);
+}
+.upload-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: rgb(232, 229, 255);
+  color: rgb(53, 37, 174);
+  font-size: 26px;
+  font-weight: 600;
+}
+.image-upload-area strong {
+  color: rgb(43, 39, 91);
+  font-size: 14px;
+}
+.image-upload-area > span:not(.upload-icon) {
+  color: rgb(119, 124, 145);
+  font-size: 12px;
+}
+.image-upload-area .upload-format {
+  color: rgb(91, 79, 205);
+  font-weight: 600;
+}
+.property-image-preview {
+  width: 100%;
+  max-height: 280px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+.hidden-file-input {
+  display: none;
+}
+.form-message {
+  padding: 13px 15px;
+  border-radius: 9px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.form-message.success {
+  border: 1px solid rgb(191, 231, 211);
+  background: rgb(236, 250, 242);
+  color: rgb(29, 119, 75);
+}
+.form-message.error {
+  border: 1px solid rgb(247, 202, 202);
+  background: rgb(255, 242, 242);
+  color: rgb(174, 46, 46);
+}
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 5px 2px 20px;
+}
+.form-actions > p {
+  margin: 0;
+  color: rgb(125, 131, 149);
+  font-size: 12px;
+}
+.add-property-button {
+  min-height: 46px;
+  padding: 0 23px;
+  border: none;
+  border-radius: 9px;
+  background: rgb(57, 43, 174);
+  color: white;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 5px 12px rgba(57, 43, 174, 0.16);
+ 
+}
+.add-property-button:hover:not(:disabled) {
+  background: rgb(43, 31, 145);
+  transform: translateY(-1px);
+}
+.add-property-button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+@media (max-width: 700px) {
+  .add-property-heading h1 {
+    font-size: 24px;
+  }
+  .add-property-heading-icon {
+    width: 46px;
+    height: 46px;
+    font-size: 27px;
+  }
+  .form-section {
+    padding: 19px;
+  }
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .form-field.full-width {
+    grid-column: auto;
+  }
+  .form-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .add-property-button {
+    width: 100%;
+  }
+}

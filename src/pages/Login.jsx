@@ -1,24 +1,55 @@
 import { useState } from "react";
-import "./Login.css"
+import "./Login.css";
 import { loginUser } from "../components/api.js";
-function Login({ onSignup }) {
+function Login({ onSignup, onLoginSuccess }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   function handleLogin(event) {
     event.preventDefault();
-    loginUser(username, password).then((data) => {
-      console.log(data);
-    });
+    setError("");
+    setLoading(true);
+    loginUser(username, password)
+      .then((data) => {
+        console.log("Login response:", data);
+        console.log("Response keys:", Object.keys(data || {}));
+        if (data?.access) {
+          localStorage.setItem("access", data.access);
+          onLoginSuccess();
+        } else {
+          setError(
+            data?.detail ||
+              data?.error ||
+              data?.message ||
+              "Login failed. Access token was not received."
+          );
+        }
+      })
+      .catch((error) => {
+        console.error("Login error:", error);
+        setError("Unable to connect to the server. Please try again.");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }
   return (
-        <div className="login-page">
-         <div className="login-left">
-         <div className="left-content">
+    <div className="login-page">
+      <div className="login-left">
+        <div className="left-content">
+          <div className="auth-logo">
+            <img
+              src="/images/logo.jpeg"
+              alt="BlueNest logo"
+            />
             <h2>BlueNest</h2>
-             <h1>Find a place to call home.</h1>
-             <p>Your next chapter starts with the right home. </p>
-             </div>
+          </div>
+
+          <h1>Find a place to call home.</h1>
+          <p>Your next chapter starts with the right home.</p>
         </div>
+      </div>
       <div className="login-right">
         <h1>Welcome Back!</h1>
         <p>Login to your account</p>
@@ -28,7 +59,7 @@ function Login({ onSignup }) {
             type="text"
             placeholder="Enter your username"
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(event) => setUsername(event.target.value)}
             required
           />
           <label>Password</label>
@@ -36,10 +67,14 @@ function Login({ onSignup }) {
             type="password"
             placeholder="Enter your password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(event) => setPassword(event.target.value)}
             required
           />
-          <button type="submit">Log In</button>
+          {error && <p className="login-error">{error}</p>}
+
+          <button type="submit" disabled={loading}>
+            {loading ? "Logging in..." : "Log In"}
+          </button>
         </form>
         <p className="signup">
           Don't have an account?{" "}
