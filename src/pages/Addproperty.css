@@ -264,7 +264,6 @@
   font-weight: 700;
   cursor: pointer;
   box-shadow: 0 5px 12px rgba(57, 43, 174, 0.16);
- 
 }
 .add-property-button:hover:not(:disabled) {
   background: rgb(43, 31, 145);
@@ -300,4 +299,49 @@
   .add-property-button {
     width: 100%;
   }
+}
+.ml-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+.ml-actions button {
+  padding: 10px 14px;
+  border: none;
+  border-radius: 6px;
+  background-color: #172554;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.ml-actions button:hover {
+  background-color: #263b75;
+}
+.ml-actions button:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+.predicted-rent {
+  margin-top: 10px;
+  padding: 12px;
+  border-radius: 6px;
+  background-color: #eff6ff;
+  color: #172554;
+  font-weight: 600;
+}
+.ml-message {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+.ml-message.success {
+  background-color: #ecfdf5;
+  color: #166534;
+}
+.ml-message.error {
+  background-color: #fef2f2;
+  color: #b91c1c;
 }

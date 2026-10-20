@@ -3,6 +3,8 @@ import "./Addproperty.css";
 import {
   createProperty,
   uploadPropertyImage,
+  predictRent,
+  checkListing,
 } from "../components/api.js";
 function AddProperty() {
   const [title, setTitle] = useState("");
@@ -21,11 +23,126 @@ function AddProperty() {
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
   const [loading, setLoading] = useState(false);
+  const [predictingRent, setPredictingRent] = useState(false);
+  const [checkingListing, setCheckingListing] = useState(false);
+  const [predictedRent, setPredictedRent] = useState(null);
+  const [mlMessage, setMlMessage] = useState("");
+  const [mlMessageType, setMlMessageType] = useState("");
+  function getCity() {
+    return address.includes(",")
+      ? address.split(",").pop().trim()
+      : address.trim();
+  }
+  function getFurnishingStatus() {
+    if (furnishing === "semi_furnished") return "Semi-Furnished";
+    if (furnishing === "furnished") return "Furnished";
+    return "Unfurnished";
+  }
+  function getTenantPreference() {
+    if (tenantPreference === "bachelor") return "Bachelors";
+    if (tenantPreference === "any") return "Bachelors/Family";
+    return "Family";
+  }
   function handleImageChange(event) {
     const file = event.target.files[0];
     if (file) {
       setImageFile(file);
       setImagePreview(URL.createObjectURL(file));
+    }
+  }
+  async function handlePredictRent() {
+    setMlMessage("");
+    setMlMessageType("");
+    setPredictedRent(null);
+    const city = getCity();
+    if (!city || !size || !bhk) {
+      setMlMessage(
+        "Please enter the property location, size and BHK first."
+      );
+      setMlMessageType("error");
+      return;
+    }
+    setPredictingRent(true);
+    try {
+      const result = await predictRent({
+        bhk: Number(bhk),
+        size: Number(size),
+        floor: Number(floor),
+        bathroom: Number(bathrooms),
+        city,
+        area_type: "Super Area",
+        furnishing_status: getFurnishingStatus(),
+        tenant_preferred: getTenantPreference(),
+      });
+      console.log("Rent prediction response:", result);
+      const rentValue =
+        result.estimated_rent ??
+        result.predicted_rent ??
+        result.predictedRent ??
+        result.prediction ??
+        result.rent;
+      if (
+        rentValue == null ||
+        !Number.isFinite(Number(rentValue)) ||
+        Number(rentValue) < 0
+      ) {
+        setMlMessage(
+          "Prediction response received, but the rent field needs confirmation."
+        );
+        setMlMessageType("error");
+        return;
+      }
+      setPredictedRent(Number(rentValue));
+      setRent(String(Math.round(Number(rentValue))));
+      setMlMessage(
+        "Estimated rent received. You can edit the rent if needed."
+      );
+      setMlMessageType("success");
+    } catch (error) {
+      console.error("Rent prediction error:", error);
+      setMlMessage(error.message || "Unable to predict rent.");
+      setMlMessageType("error");
+    } finally {
+      setPredictingRent(false);
+    }
+  }
+  async function handleCheckListing() {
+    setMlMessage("");
+    setMlMessageType("");
+    const city = getCity();
+    if (!city || !size || !bhk || !rent) {
+      setMlMessage(
+        "Please enter the city, property size, BHK and rent first."
+      );
+      setMlMessageType("error");
+      return;
+    }
+    setCheckingListing(true);
+    try {
+      const result = await checkListing({
+        bhk: Number(bhk),
+        size: Number(size),
+        city,
+        rent: Number(rent),
+      });
+      console.log("Listing check response:", result);
+      const resultMessage =
+        result.message ||
+        result.detail ||
+        result.result ||
+        result.prediction;
+      setMlMessage(
+        typeof resultMessage === "string"
+          ? resultMessage
+          : "Listing check completed. See the console for the API response."
+      );
+      setMlMessageType("success");
+    } catch (error) {
+      console.error("Listing check error:", error);
+      setMlMessage(error.message || "Unable to check the listing.");
+      setMlMessageType("error");
+    } finally {
+      setCheckingListing(false);
     }
   }
   async function handleSubmit(event) {
@@ -38,9 +155,8 @@ function AddProperty() {
       setMessageType("error");
       return;
     }
-    const city = address.includes(",")
-      ? address.split(",").pop().trim()
-      : address.trim();
+
+    const city = getCity();
     const propertyData = {
       title,
       description,
@@ -60,12 +176,7 @@ function AddProperty() {
     setLoading(true);
     try {
       const result = await createProperty(propertyData, token);
-
       console.log("Property created:", result);
-      console.log(
-        "Property response:",
-        JSON.stringify(result, null, 2)
-      );
       if (imageFile) {
         const propertyId =
           result.data?.id ??
@@ -100,6 +211,9 @@ function AddProperty() {
       setTenantPreference("family");
       setImagePreview("");
       setImageFile(null);
+      setPredictedRent(null);
+      setMlMessage("");
+      setMlMessageType("");
     } catch (error) {
       console.error("Add property error:", error);
       setMessage(error.message || "Unable to add property.");
@@ -231,10 +345,37 @@ function AddProperty() {
                   placeholder="15000"
                   min="1"
                   value={rent}
-                  onChange={(event) => setRent(event.target.value)}
+                  onChange={(event) => {
+                    setRent(event.target.value);
+                    setPredictedRent(null);
+                  }}
                   required
                 />
               </div>
+              <div className="ml-actions">
+                <button
+                  type="button"
+                  onClick={handlePredictRent}
+                  disabled={predictingRent || loading || checkingListing}
+                >
+                  {predictingRent ? "Predicting..." : "Predict Rent"}
+                </button>
+                <button
+                  type="button"
+                  onClick={handleCheckListing}
+                  disabled={checkingListing || loading || predictingRent}
+                >
+                  {checkingListing ? "Checking..." : "Check Listing"}
+                </button>
+              </div>
+              {predictedRent !== null && (
+                <p className="field-hint">
+                  Estimated monthly rent: ₹
+                  {predictedRent.toLocaleString("en-IN", {
+                    maximumFractionDigits: 2,
+                  })}
+                </p>
+              )}
             </div>
             <div className="form-field">
               <label htmlFor="property-floor">Floor Number *</label>
@@ -275,6 +416,11 @@ function AddProperty() {
             </div>
           </div>
         </section>
+        {mlMessage && (
+          <div className={`form-message ${mlMessageType}`} role="status">
+            {mlMessage}
+          </div>
+        )}
         <section className="form-section">
           <div className="form-section-heading">
             <div className="form-section-icon">03</div>
@@ -339,7 +485,7 @@ function AddProperty() {
           <button
             type="submit"
             className="add-property-button"
-            disabled={loading}
+            disabled={loading || predictingRent || checkingListing}
           >
             {loading ? "Adding Property..." : "Add Property →"}
           </button>

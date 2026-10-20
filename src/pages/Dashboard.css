@@ -1,8 +1,6 @@
-
 * {
   box-sizing: border-box;
 }
-
 :root {
   --primary: rgb(39, 19, 173);
   --primary-dark: rgb(29, 15, 132);
@@ -13,7 +11,6 @@
   --text: rgb(105, 117, 138);
   --border: rgb(225, 229, 239);
 }
-
 .dashboard {
   display: flex;
   min-height: 100vh;
@@ -21,23 +18,18 @@
   color: var(--heading);
   font-family: Inter, "Segoe UI", Arial, sans-serif;
 }
-
 .sidebar {
   width: 250px;
   min-width: 250px;
   padding: 28px 16px;
   color: var(--white);
   background:
-    linear-gradient(
-      rgba(20, 22, 55, 0.72),
-      rgba(20, 22, 55, 0.82)
-    ),
+    linear-gradient(rgba(20, 22, 55, 0.72), rgba(20, 22, 55, 0.82)),
     url("/images/img.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
-
 .logo {
   display: flex;
   align-items: center;
@@ -48,7 +40,6 @@
   font-size: 23px;
   font-weight: 750;
 }
-
 .sidebar-logo {
   width: 46px;
   height: 46px;
@@ -58,7 +49,6 @@
   background: var(--white);
   flex-shrink: 0;
 }
-
 .sidebar-menu {
   display: flex;
   flex-direction: column;
@@ -89,11 +79,7 @@
 
 .sidebar-menu a.active,
 .sidebar-menu .menu-item.active {
-  background: linear-gradient(
-    100deg,
-    rgb(52, 35, 179),
-    rgb(69, 53, 207)
-  );
+  background: linear-gradient(100deg, rgb(52, 35, 179), rgb(69, 53, 207));
   color: var(--white);
   font-weight: 650;
 }
@@ -169,35 +155,47 @@
   font-weight: 750;
   flex-shrink: 0;
 }
-
 .logout-btn {
-  padding: 9px 17px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--white);
-  color: rgb(36, 59, 100);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 10px 17px;
+  border: 1px solid rgb(225, 229, 239);
+  border-radius: 9px;
+  background: rgb(255, 255, 255);
+  color: rgb(39, 19, 173);
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
   font-size: 13px;
   font-weight: 600;
+  line-height: 1.4;
+  white-space: nowrap;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s, border-color 0.2s;
   flex-shrink: 0;
+  transition: background 0.2s ease, color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .logout-btn:hover:not(:disabled) {
-  background: rgb(36, 59, 100);
-  color: var(--white);
-  border-color: rgb(36, 59, 100);
+  background: rgb(39, 19, 173);
+  color: rgb(255, 255, 255);
+  border-color: rgb(39, 19, 173);
 }
 
-button:disabled {
+.logout-btn:focus-visible {
+  outline: 3px solid rgba(39, 19, 173, 0.2);
+  outline-offset: 3px;
+}
+
+.logout-btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
+
 .dashboard-content {
   padding: 32px;
 }
-
 .welcome-section {
   margin-bottom: 27px;
 }
@@ -223,7 +221,6 @@ button:disabled {
   font-size: 14px;
   line-height: 1.7;
 }
-
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -260,14 +257,6 @@ button:disabled {
   line-height: 1.5;
 }
 
-.stat-card h2 {
-  margin: 17px 0 0;
-  color: var(--heading);
-  font-size: 28px;
-  letter-spacing: -0.6px;
-  overflow-wrap: anywhere;
-}
-
 .stat-icon {
   width: 42px;
   height: 42px;
@@ -289,6 +278,13 @@ button:disabled {
   color: rgb(26, 137, 94);
 }
 
+.stat-card h2 {
+  margin: 17px 0 0;
+  color: var(--heading);
+  font-size: 28px;
+  letter-spacing: -0.6px;
+  overflow-wrap: anywhere;
+}
 .properties-section {
   padding: 25px;
   background: var(--white);
@@ -296,7 +292,6 @@ button:disabled {
   border-radius: 15px;
   box-shadow: 0 3px 12px rgba(24, 31, 60, 0.025);
 }
-
 .section-heading {
   display: flex;
   align-items: center;
@@ -398,7 +393,6 @@ button:disabled {
   font-size: 13px;
   line-height: 1.7;
 }
-
 .page-content,
 .my-properties-page {
   padding: 10px 0;
@@ -438,7 +432,6 @@ button:disabled {
   color: var(--primary);
   font-size: 26px;
 }
-
 .my-properties-heading {
   display: flex;
   align-items: center;
@@ -620,7 +613,6 @@ button:disabled {
 .my-properties-page .property-actions button:last-child:hover:not(:disabled) {
   background: rgb(255, 215, 215);
 }
-
 .recent-properties-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -709,7 +701,179 @@ button:disabled {
   font-size: 14px;
   overflow-wrap: anywhere;
 }
+.market-insights {
+  width: 100%;
+  padding: 8px 0 24px;
+  color: var(--heading);
+}
 
+.market-insights .market-insights-heading {
+  display: block;
+  margin: 0 0 32px;
+}
+
+.market-insights .market-insights-heading .eyebrow {
+  margin: 0 0 12px;
+  color: var(--primary);
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 1.5px;
+}
+
+.market-insights .market-insights-heading h1 {
+  margin: 0 0 16px;
+  color: var(--heading);
+  font-size: 29px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: -0.5px;
+}
+
+.market-insights .market-insights-heading > p:not(.eyebrow) {
+  margin: 0;
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.9;
+}
+
+.market-insights .market-insights-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 24px;
+  width: 100%;
+  margin: 0 0 28px;
+}
+
+.market-insights .market-insight-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  min-height: 310px;
+  padding: 27px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  box-shadow: 0 4px 14px rgba(24, 31, 60, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.market-insights .market-insight-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 9px 24px rgba(24, 31, 60, 0.08);
+}
+
+.market-insights .market-insight-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  width: 100%;
+  margin: 0 0 27px;
+}
+
+.market-insights .market-insight-label {
+  margin: 0;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.7;
+}
+
+.market-insights .market-insight-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  font-size: 23px;
+}
+
+.market-insights .rent-prediction-icon {
+  background: var(--primary-light);
+  color: var(--primary);
+}
+
+.market-insights .listing-analysis-icon {
+  background: rgb(226, 247, 239);
+  color: rgb(26, 137, 94);
+}
+
+.market-insights .market-insight-card h2 {
+  display: block;
+  width: 100%;
+  margin: 0 0 16px;
+  color: var(--heading);
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1.5;
+  letter-spacing: -0.3px;
+  overflow-wrap: anywhere;
+}
+
+.market-insights .market-insight-card > p {
+  display: block;
+  width: 100%;
+  min-height: 0;
+  margin: 0 0 60px;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 2;
+  white-space: normal;
+  overflow: visible;
+  overflow-wrap: anywhere;
+}
+
+.market-insights .market-insight-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 45px;
+  margin-top: auto;
+  padding: 13px 19px;
+  border: 1px solid var(--primary);
+  border-radius: 9px;
+  background: var(--primary);
+  color: var(--white);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.5;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.market-insights .market-insight-button:hover:not(:disabled) {
+  background: var(--primary-dark);
+  border-color: var(--primary-dark);
+}
+
+.market-insights .market-insight-button:focus-visible {
+  outline: 3px solid rgba(39, 19, 173, 0.2);
+  outline-offset: 3px;
+}
+
+.market-insights .market-insights-note {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 17px 20px;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--primary);
+  border-radius: 10px;
+  background: var(--white);
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.9;
+  white-space: normal;
+  overflow: visible;
+  overflow-wrap: anywhere;
+}
 @media (max-width: 1000px) {
   .dashboard-content {
     padding: 24px;
@@ -718,6 +882,14 @@ button:disabled {
   .my-properties-page .stats-grid,
   .recent-properties-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .market-insights .market-insights-grid {
+    gap: 18px;
+  }
+
+  .market-insights .market-insight-card {
+    padding: 22px;
   }
 }
 
@@ -730,7 +902,6 @@ button:disabled {
     width: 280px;
   }
 }
-
 @media (max-width: 700px) {
   .dashboard {
     flex-direction: column;
@@ -819,5 +990,43 @@ button:disabled {
   .my-properties-page form {
     grid-template-columns: 1fr;
     padding: 16px;
+  }
+
+  .market-insights {
+    padding-top: 4px;
+  }
+  .market-insights .market-insights-heading {
+    margin-bottom: 26px;
+  }
+  .market-insights .market-insights-heading h1 {
+    font-size: 25px;
+    margin-bottom: 14px;
+  }
+  .market-insights .market-insights-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+    margin-bottom: 22px;
+  }
+  .market-insights .market-insight-card {
+    min-height: 0;
+    padding: 23px;
+  }
+  .market-insights .market-insight-card-top {
+    margin-bottom: 23px;
+  }
+  .market-insights .market-insight-card h2 {
+    font-size: 20px;
+    margin-bottom: 14px;
+  }
+  .market-insights .market-insight-card > p {
+    margin-bottom: 28px;
+    line-height: 1.9;
+  }
+  .market-insights .market-insight-button {
+    min-height: 44px;
+  }
+  .market-insights .market-insights-note {
+    padding: 15px;
+    line-height: 1.9;
   }
 }
