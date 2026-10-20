@@ -1,8 +1,6 @@
-
 import { useState } from "react";
 import "./Signup.css";
 import { registerUser } from "../components/api.js";
-
 function Signup({ onLogin }) {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -12,18 +10,14 @@ function Signup({ onLogin }) {
   const [role, setRole] = useState("tenant");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-
   async function handleSignup(event) {
     event.preventDefault();
     setMessage("");
-
     if (password !== confirmPassword) {
       setMessage("Passwords do not match.");
       return;
     }
-
     const nameParts = fullName.trim().split(/\s+/);
-
     if (!fullName.trim()) {
       setMessage("Please enter your full name.");
       return;
@@ -42,6 +36,12 @@ function Signup({ onLogin }) {
       const result = await registerUser(userData);
       console.log("Signup response:", result);
       setMessage("Account created successfully! You can now log in.");
+      setFullName("");
+      setEmail("");
+      setPhone("");
+      setPassword("");
+      setConfirmPassword("");
+      setRole("tenant");
     } catch (error) {
       console.error("Signup error:", error);
       setMessage(error.message || "Unable to create account.");

@@ -1,38 +1,50 @@
+
 import { useEffect, useState } from "react";
 import "./Dashboard.css";
 import MyProperties from "./Myproperties";
 import AddProperty from "./Addproperty";
+import BookingRequests from "./BookingRequests";
 import { getProperties } from "../components/api.js";
-function Dashboard({ activePage, onNavigate }) {
+
+function Dashboard({ activePage, onNavigate, onLogout }) {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [searchText, setSearchText] = useState("");
+
   const menuItems = [
     "Dashboard",
     "My Properties",
     "Add Property",
+    "Booking Requests",
     "Market Insights",
   ];
+
   const propertyImages = [
     "/images/property1.jpg",
     "/images/property2.jpg",
     "/images/property3.jpg",
   ];
+
   useEffect(() => {
     async function loadDashboardData() {
       const token = localStorage.getItem("access");
+
       if (!token) {
         setError("Please log in again to load dashboard data.");
         setLoading(false);
         return;
       }
+
       setLoading(true);
+
       try {
         const data = await getProperties(token);
 
         const propertyList = Array.isArray(data)
           ? data
           : data.results || data.properties || [];
+
         setProperties(propertyList);
         setError("");
       } catch (err) {
@@ -42,15 +54,30 @@ function Dashboard({ activePage, onNavigate }) {
         setLoading(false);
       }
     }
+
     loadDashboardData();
   }, [activePage]);
+
+  const filteredProperties = properties.filter((property) => {
+    const search = searchText.trim().toLowerCase();
+
+    return (
+      String(property.title || "").toLowerCase().includes(search) ||
+      String(property.city || "").toLowerCase().includes(search) ||
+      String(property.locality || "").toLowerCase().includes(search)
+    );
+  });
+
   const totalProperties = properties.length;
+
   const monthlyIncome = properties.reduce((total, property) => {
     return total + Number(property.asking_rent ?? property.rent ?? 0);
   }, 0);
+
   function formatRent(amount) {
     return `₹${amount.toLocaleString("en-IN")}`;
   }
+
   return (
     <div className="dashboard">
       <aside className="sidebar">
@@ -62,6 +89,7 @@ function Dashboard({ activePage, onNavigate }) {
           />
           <span>BlueNest</span>
         </div>
+
         <nav className="sidebar-menu">
           {menuItems.map((item) => (
             <a
@@ -78,18 +106,33 @@ function Dashboard({ activePage, onNavigate }) {
           ))}
         </nav>
       </aside>
+
       <main className="dashboard-main">
         <header className="topbar">
-          <input
-            type="text"
-            placeholder="Search anything..."
-            className="search-input"
-          />
+          <div className="search-box">
+            <input
+              type="text"
+              placeholder="Search properties by name or location..."
+              className="search-input"
+              value={searchText}
+              onChange={(event) => setSearchText(event.target.value)}
+            />
+          </div>
+
           <div className="user-info">
             <span>Welcome, User</span>
             <div className="user-avatar">U</div>
+
+            <button
+              type="button"
+              onClick={onLogout}
+              className="logout-btn"
+            >
+              Logout
+            </button>
           </div>
         </header>
+
         <section className="dashboard-content">
           {activePage === "Dashboard" && (
             <>
@@ -100,7 +143,11 @@ function Dashboard({ activePage, onNavigate }) {
                   Here's what's happening with your properties today.
                 </p>
               </div>
-              {error && <p className="dashboard-error">{error}</p>}
+
+              {error && (
+                <p className="dashboard-error">{error}</p>
+              )}
+
               <div className="stats-grid">
                 <div className="stat-card">
                   <div className="stat-card-top">
@@ -109,6 +156,7 @@ function Dashboard({ activePage, onNavigate }) {
                   </div>
                   <h2>{loading ? "..." : totalProperties}</h2>
                 </div>
+
                 <div className="stat-card">
                   <div className="stat-card-top">
                     <p>Monthly Listed Rent</p>
@@ -117,12 +165,14 @@ function Dashboard({ activePage, onNavigate }) {
                   <h2>{loading ? "..." : formatRent(monthlyIncome)}</h2>
                 </div>
               </div>
+
               <section className="properties-section">
                 <div className="section-heading">
                   <div>
                     <h2>Recent Properties</h2>
                     <p>Keep track of the properties you manage.</p>
                   </div>
+
                   <button
                     className="view-all-btn"
                     onClick={() => onNavigate("My Properties")}
@@ -130,79 +180,108 @@ function Dashboard({ activePage, onNavigate }) {
                     View all →
                   </button>
                 </div>
+
                 {loading ? (
                   <p>Loading properties...</p>
                 ) : error ? (
                   <p>Properties could not be loaded.</p>
-                ) : properties.length === 0 ? (
+                ) : filteredProperties.length === 0 ? (
                   <div className="empty-state">
                     <div className="empty-icon">⌂</div>
-                    <h3>No properties to show yet</h3>
+
+                    <h3>
+                      {searchText.trim()
+                        ? "No matching properties found"
+                        : "No properties to show yet"}
+                    </h3>
+
                     <p>
-                      Your properties will appear here once property
-                      details are available.
+                      {searchText.trim()
+                        ? "Try searching with a different property name or location."
+                        : "Your properties will appear here once property details are available."}
                     </p>
-                    <button
-                      className="empty-action-btn"
-                      onClick={() => onNavigate("Add Property")}
-                    >
-                      + Add your first property
-                    </button>
+
+                    {!searchText.trim() && (
+                      <button
+                        className="empty-action-btn"
+                        onClick={() => onNavigate("Add Property")}
+                      >
+                        + Add your first property
+                      </button>
+                    )}
                   </div>
                 ) : (
                   <div className="recent-properties-grid">
-                    {properties.slice(0, 3).map((property, index) => (
-                      <div
-                        className="recent-property-card"
-                        key={property.id ?? index}
-                      >
-                        <img
-                          src={
-                            property.image ||
-                            propertyImages[index % propertyImages.length]
-                          }
-                          alt={property.title || "Property"}
-                          className="recent-property-image"
-                        />
-                        <div className="recent-property-details">
-                          <h3>{property.title || "Untitled Property"}</h3>
-                          <p className="property-location">
-                            {property.locality ||
-                              property.city ||
-                              "Location unavailable"}
-                          </p>
-                          <p className="property-rent">
-                            {formatRent(
-                              Number(
-                                property.asking_rent ?? property.rent ?? 0
-                              )
-                            )}
-                            <span> / month</span>
-                          </p>
-                          <div className="property-card-bottom">
-                            <span>
-                              {property.bhk
-                                ? `${property.bhk} BHK`
-                                : "Residential"}
-                            </span>
-                            <span className="property-status">
-                              {property.is_active ? "Active" : "Inactive"}
-                            </span>
+                    {filteredProperties
+                      .slice(0, 3)
+                      .map((property, index) => (
+                        <div
+                          className="recent-property-card"
+                          key={property.id ?? index}
+                        >
+                          <img
+                            src={
+                              property.image ||
+                              propertyImages[index % propertyImages.length]
+                            }
+                            alt={property.title || "Property"}
+                            className="recent-property-image"
+                          />
+
+                          <div className="recent-property-details">
+                            <h3>
+                              {property.title || "Untitled Property"}
+                            </h3>
+
+                            <p className="property-location">
+                              {property.locality ||
+                                property.city ||
+                                "Location unavailable"}
+                            </p>
+
+                            <p className="property-rent">
+                              {formatRent(
+                                Number(
+                                  property.asking_rent ??
+                                    property.rent ??
+                                    0
+                                )
+                              )}
+                              <span> / month</span>
+                            </p>
+
+                            <div className="property-card-bottom">
+                              <span>
+                                {property.bhk
+                                  ? `${property.bhk} BHK`
+                                  : "Residential"}
+                              </span>
+
+                              <span className="property-status">
+                                {property.is_active
+                                  ? "Active"
+                                  : "Inactive"}
+                              </span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
                   </div>
                 )}
               </section>
             </>
           )}
+
           {activePage === "My Properties" && (
             <MyProperties
               onAddProperty={() => onNavigate("Add Property")}
             />
           )}
+
           {activePage === "Add Property" && <AddProperty />}
+
+          {activePage === "Booking Requests" && <BookingRequests />}
+
           {activePage === "Market Insights" && (
             <div className="welcome-section">
               <h1>Market Insights</h1>
@@ -214,4 +293,5 @@ function Dashboard({ activePage, onNavigate }) {
     </div>
   );
 }
+
 export default Dashboard;

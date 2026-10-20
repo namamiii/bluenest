@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import "./Dashboard.css";
 import {
@@ -56,6 +55,13 @@ function MyProperties({ onAddProperty }) {
         property.asking_rent ?? property.rent ?? "",
       property_type: property.property_type || "",
       bhk: property.bhk ?? "",
+      city: property.city || "",
+      locality: property.locality || "",
+      size_sqft: property.size_sqft ?? "",
+      floor: property.floor ?? "",
+      bathrooms: property.bathrooms ?? "",
+      furnishing_status: property.furnishing_status || "",
+      tenant_preference: property.tenant_preference || "",
     });
   }
   function handleInputChange(event) {
@@ -76,16 +82,37 @@ function MyProperties({ onAddProperty }) {
       setError("Property ID not found. Cannot update this property.");
       return;
     }
+    const requiredFields = [
+      ["city", "City"],
+      ["locality", "Locality"],
+      ["size_sqft", "Property size (sq. ft.)"],
+      ["floor", "Floor"],
+      ["bathrooms", "Bathrooms"],
+      ["furnishing_status", "Furnishing status"],
+      ["tenant_preference", "Tenant preference"],
+    ];
+    const missingFields = requiredFields
+      .filter(([field]) => {
+        const value = editingProperty[field];
+        return value === "" || value === null || value === undefined;
+      })
+      .map(([, label]) => label);
+
+    if (missingFields.length > 0) {
+      setError(
+        `Please provide the missing details: ${missingFields.join(", ")}.`
+      );
+      return;
+    }
     setSaving(true);
     setError("");
     try {
       const propertyData = {
-        title: editingProperty.title,
-        address: editingProperty.address,
-        asking_rent: editingProperty.asking_rent,
-        property_type: editingProperty.property_type,
-        bhk: editingProperty.bhk,
+        ...editingProperty,
       };
+      delete propertyData.id;
+      delete propertyData.created_at;
+      delete propertyData.updated_at;
       await updateProperty(
         editingProperty.id,
         propertyData,

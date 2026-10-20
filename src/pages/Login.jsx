@@ -12,10 +12,17 @@ function Login({ onSignup, onLoginSuccess }) {
     setLoading(true);
     loginUser(username, password)
       .then((data) => {
-        console.log("Login response:", data);
-        console.log("Response keys:", Object.keys(data || {}));
+        console.log("Login response:", {
+          message: data?.message,
+          hasAccess: Boolean(data?.access),
+          hasRefresh: Boolean(data?.refresh),
+        });
         if (data?.access) {
           localStorage.setItem("access", data.access);
+
+          if (data?.refresh) {
+            localStorage.setItem("refresh", data.refresh);
+          }
           onLoginSuccess();
         } else {
           setError(
@@ -45,7 +52,6 @@ function Login({ onSignup, onLoginSuccess }) {
             />
             <h2>BlueNest</h2>
           </div>
-
           <h1>Find a place to call home.</h1>
           <p>Your next chapter starts with the right home.</p>
         </div>
@@ -71,7 +77,6 @@ function Login({ onSignup, onLoginSuccess }) {
             required
           />
           {error && <p className="login-error">{error}</p>}
-
           <button type="submit" disabled={loading}>
             {loading ? "Logging in..." : "Log In"}
           </button>

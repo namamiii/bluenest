@@ -1,0 +1,153 @@
+
+.booking-page {
+  width: 100%;
+  padding: 10px 0;
+  color: #202b46;
+}
+
+.booking-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.booking-heading h1,
+.booking-page h1 {
+  margin: 0 0 10px;
+  font-size: 28px;
+}
+
+.booking-heading p {
+  margin: 0;
+  color: #737b8c;
+}
+
+.booking-heading .eyebrow {
+  margin-bottom: 8px;
+  color: #6575a8;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.booking-count {
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: #edf1ff;
+  color: #354b91;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.booking-list {
+  display: grid;
+  gap: 18px;
+}
+
+.booking-card {
+  padding: 22px;
+  border: 1px solid #e7eaf1;
+  border-radius: 14px;
+  background: #ffffff;
+}
+
+.booking-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 14px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #edf0f5;
+}
+
+.booking-card h2 {
+  margin: 0 0 7px;
+  font-size: 18px;
+}
+
+.booking-reference {
+  margin: 0;
+  color: #858b99;
+  font-size: 13px;
+}
+
+.booking-status {
+  padding: 7px 11px;
+  border-radius: 8px;
+  background: #f0f2f7;
+  color: #4c5873;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.booking-details {
+  padding-top: 12px;
+}
+
+.booking-details p {
+  margin: 9px 0;
+  color: #687184;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.booking-details strong {
+  color: #303b54;
+}
+
+.booking-empty-state {
+  padding: 50px 20px;
+  border: 1px dashed #d9deeb;
+  border-radius: 14px;
+  text-align: center;
+  background: #ffffff;
+}
+
+.booking-empty-icon {
+  margin-bottom: 12px;
+  font-size: 38px;
+  color: #7182b5;
+}
+
+.booking-empty-state h2 {
+  margin: 0 0 10px;
+  font-size: 20px;
+}
+
+.booking-empty-state p {
+  margin: 0;
+  color: #737b8c;
+  line-height: 1.6;
+}
+
+.booking-error {
+  margin-top: 20px;
+  color: #c03939;
+}
+
+.booking-retry-btn {
+  margin-top: 12px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  background: #354b91;
+  color: white;
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  .booking-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .booking-card {
+    padding: 16px;
+  }
+
+  .booking-card-top {
+    flex-direction: column;
+  }
+}
