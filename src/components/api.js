@@ -189,19 +189,6 @@ export async function logoutUser(refreshToken, accessToken) {
   });
   return readResponse(response);
 }
-export async function createBooking(bookingData) {
-  const response = await authorizedFetch(
-    `${BASE_URL}/api/booking/create/`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(bookingData),
-    }
-  );
-  return readResponse(response);
-}
 export async function decideBooking(bookingId, status) {
   const token = localStorage.getItem("access");
 
